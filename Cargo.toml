@@ -1,0 +1,6 @@
+[package]
+name = "crab_shell"
+version = "0.1.0"
+authors = ["Gabby Ortman <gortman@rednovalabs.com>"]
+
+[dependencies]
