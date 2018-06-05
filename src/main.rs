@@ -7,20 +7,24 @@ fn main() {
     println!("In the beginning there was darkness.");
     let mut command = String::new();
     loop {
-        // read user input
         io::stdin().read_line(&mut command)
             .expect("issue reading command.");
 
-        // determine when to exit
-        // maybe 'match' for 'history' or 'more' or ! or !5 or & idk
         command.pop();
-        if command == "exit" {
-            process::exit(1);
+        // history, !!, !n, etc
+        // okay but what about | and && and what not
+        match command.as_ref() {
+            "exit" => process::exit(1),
+            "history" => println!("list command history"),
+            "!!" => println!("execute last command"),
+            _ => tokenize_command(&command),
         }
 
-        // do some shit
-
-        // clear the command
         command.clear();
     }
+}
+
+fn tokenize_command(command: &str) {
+    let tokens: Vec<&str> = command.split(" ").collect();
+    //println!("{:?}", tokens);
 }
