@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Gabby Ortman <gortman@rednovalabs.com>"]
 
 [dependencies]
+colored = "1.6.1"
+

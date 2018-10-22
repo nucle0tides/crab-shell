@@ -1,30 +1,35 @@
-use std::io;
+use std::io::{self, Write};
 use std::process;
+use std::env;
 
-const SHELL_PROMPT: &str = "gabby@cosmonaut:~> ";
+extern crate colored;
+
+use colored::*;
+
+const HOSTNAME: &str = "gabby@cosmonaut";
 
 fn main() {
     println!("In the beginning there was darkness.");
-    let mut command = String::new();
     loop {
-        io::stdin().read_line(&mut command)
-            .expect("issue reading command.");
+        print!("{}:~{}{} ", HOSTNAME.magenta().bold(), env::current_dir().unwrap().to_string_lossy().cyan().bold(), String::from(">").cyan().bold());
+        io::stdout().flush().unwrap();
+        let mut command = read_line().expect("issue reading from stdin");
 
         command.pop();
-        // history, !!, !n, etc
-        // okay but what about | and && and what not
-        match command.as_ref() {
-            "exit" => process::exit(1),
-            "history" => println!("list command history"),
-            "!!" => println!("execute last command"),
-            _ => tokenize_command(&command),
+        let tokens: Vec<_> = command.split_whitespace().collect();
+
+        for token in &tokens {
+            if *token == "exit" {
+                process::exit(0);
+            }
         }
 
-        command.clear();
     }
 }
 
-fn tokenize_command(command: &str) {
-    let tokens: Vec<&str> = command.split(" ").collect();
-    //println!("{:?}", tokens);
+// thanks elias
+fn read_line() -> Result<String, io::Error> {
+    let mut line = String::new();
+    io::stdin().read_line(&mut line)?;
+    Ok(line)
 }
