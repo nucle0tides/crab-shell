@@ -16,7 +16,11 @@ fn main() {
         let mut command = read_line().expect("issue reading from stdin");
 
         command.pop();
-        let tokens: Vec<_> = command.split_whitespace().collect();
+        if command.is_empty() {
+            continue
+        }
+
+        let tokens: Vec<_> = command.split_whitespace().map(String::from).collect();
 
         for token in &tokens {
             if *token == "exit" {
@@ -24,6 +28,10 @@ fn main() {
             }
         }
 
+        process::Command::new(&tokens[0])
+            .args(&tokens[1..])
+            .spawn()
+            .expect("oh no oh nononono");
     }
 }
 
